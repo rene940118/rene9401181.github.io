@@ -1,259 +1,316 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WHOSIDEA富裕團體服估價單</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WHOSIDEA富裕團體服估價單</title>
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    *{ box-sizing:border-box; }
+    html,body{
+      margin:0; padding:0; overflow-x:hidden;
+      font-family:-apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC";
+      background:#f5f6f7;
+    }
+    .container{ width:100%; padding:18px; background:#fff; }
+    h1{ text-align:center; margin-bottom:4px; font-size:24px; }
+    .subtitle{ text-align:center; color:#888; font-size:15px; margin-bottom:22px; }
+    .section{ margin-bottom:18px; }
+    .section label{ display:block; margin-bottom:8px; font-weight:600; font-size:16px; }
 
-html,body{
-  margin:0;
-  padding:0;
-  overflow-x:hidden;
-  font-family:-apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC";
-  background:#f5f6f7;
-}
+    select, input[type="number"]{
+      width:100%; padding:14px; border:1px solid #ccc; border-radius:6px;
+      font-size:16px; background:#fff;
+    }
 
-.container{
-  width:100%;
-  padding:18px;
-  background:#fff;
-}
+    .price-box{
+      border:2px dashed #f0c36d; background:#fff9e6;
+      padding:18px; margin-top:24px; font-size:15px;
+    }
+    .price-line{ display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; }
+    .price-line > *{ min-width:0; }
+    .total{ font-size:24px; font-weight:bold; color:#c0392b; text-align:right; }
 
-h1{
-  text-align:center;
-  margin-bottom:4px;
-  font-size:24px;
-}
+    .note{
+      background:#fbeaea; color:#b03a2e;
+      padding:12px; border-radius:6px; margin-top:18px; font-size:14px;
+    }
+    .date{ text-align:center; color:#888; font-size:13px; margin-top:12px; }
+    .muted{ font-size:12px; color:#777; margin-top:6px; line-height:1.5; word-break:break-word; }
 
-.subtitle{
-  text-align:center;
-  color:#888;
-  font-size:15px;
-  margin-bottom:22px;
-}
-
-.section{
-  margin-bottom:18px;
-}
-
-.section label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:600;
-  font-size:16px;
-}
-
-select,
-input[type="number"]{
-  width:100%;
-  padding:14px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:16px;
-}
-
-.price-box{
-  border:2px dashed #f0c36d;
-  background:#fff9e6;
-  padding:18px;
-  margin-top:24px;
-  font-size:15px;
-}
-
-.price-line{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:8px;
-}
-
-.price-line > *{
-  min-width:0;
-}
-
-.total{
-  font-size:24px;
-  font-weight:bold;
-  color:#c0392b;
-  text-align:right;
-}
-
-.note{
-  background:#fbeaea;
-  color:#b03a2e;
-  padding:12px;
-  border-radius:6px;
-  margin-top:18px;
-  font-size:14px;
-}
-
-.date{
-  text-align:center;
-  color:#888;
-  font-size:13px;
-  margin-top:12px;
-}
-
-@media (min-width: 768px){
-  body{
-    display:flex;
-    justify-content:center;
-  }
-
-  .container{
-    width: 680px;
-    margin: 40px 0;
-    border-radius: 12px;
-  }
-}
-
-</style>
+    @media (min-width: 768px){
+      body{ display:flex; justify-content:center; }
+      .container{ width:680px; margin:40px 0; border-radius:12px; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>WHOSIDEA富裕團體服估價單</h1>
-  <div class="subtitle">專業報價系統</div>
+  <div class="container">
+    <h1>WHOSIDEA富裕團體服估價單</h1>
+    <div class="subtitle">專業報價系統</div>
 
-  <div class="section">
-    <label>1. 衣服款式</label>
-    <select id="product">
-      <option value="0">請選擇</option>
-      <option value="145">短袖棉T</option>
-      <option value="130">短袖排汗</option>
-      <option value="195">長袖棉T</option>
-      <option value="180">長袖排汗</option>
-    </select>
-    <div style="font-size:13px;color:#555;margin-top:6px;">單件價格：NT$ <span id="unitPrice">0</span></div>
-    <div id="productNote" style="font-size:12px;color:#777;margin-top:4px;"></div>
+    <div class="section">
+      <label>1. 衣服款式</label>
+      <select id="product">
+        <option value="">請選擇</option>
+        <!-- 棉質短袖兩款：都維持單價 145 -->
+        <option value="t24" data-price="145">短袖棉T（T-24）</option>
+        <option value="ag18000" data-price="145">短袖棉T（AG18000）</option>
+        <!-- 其他款式 -->
+        <option value="dry_short" data-price="130">短袖排汗</option>
+        <option value="cotton_long" data-price="195">長袖棉T</option>
+        <option value="dry_long" data-price="180">長袖排汗</option>
+      </select>
+
+      <div style="font-size:13px;color:#555;margin-top:6px;">
+        單件價格：NT$ <span id="unitPrice">0</span>
+      </div>
+      <div id="productNote" style="font-size:12px;color:#777;margin-top:4px;"></div>
+
+      <!-- 圖片預覽 -->
+      <div id="productPreview" style="margin-top:12px; display:none;">
+        <div style="font-size:13px;color:#555;margin-bottom:6px;">款式資訊</div>
+        <div style="display:grid; gap:10px;">
+          <img id="productSizeImg" src="" alt="尺寸表"
+               style="width:100%; max-height:320px; object-fit:contain; border-radius:10px; border:1px solid #eee; background:#fff;">
+          <img id="productColorImg" src="" alt="顏色圖"
+               style="width:100%; max-height:380px; object-fit:contain; border-radius:10px; border:1px solid #eee; background:#fff;">
+        </div>
+        <div id="imgError" class="muted"
+             style="display:none;color:#b03a2e;background:#fbeaea;padding:10px;border-radius:8px;margin-top:10px;">
+          圖片載入失敗：請確認圖片檔名正確（含大小寫），並確認 images 資料夾位置。
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <label>數量</label>
+      <input id="quantity" type="number" list="quantity-options"
+             placeholder="請先選擇衣服款式" min="1" inputmode="numeric" disabled />
+    </div>
+    <datalist id="quantity-options">
+      <option value="100"></option>
+      <option value="200"></option>
+      <option value="300"></option>
+    </datalist>
+
+    <div class="section">
+      <label>2. 印刷大約想要幾色（版費）</label>
+      <select id="printFee">
+        <option value="0">請選擇</option>
+        <option value="600">單色</option>
+        <option value="1200">雙色</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label>3. 需要設計嗎（設計費）</label>
+      <select id="designFee">
+        <option value="0">請選擇</option>
+        <option value="0">不需要</option>
+        <option value="2000">需要</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label>4. 配件</label>
+      <select id="addon">
+        <option value="0">無</option>
+        <option value="35">+口袋</option>
+      </select>
+      <div class="muted">配件費用會依「數量」乘上去。</div>
+    </div>
+
+    <div class="price-box">
+      <div class="price-line"><span>衣服小計：</span><span id="mainPrice">0</span></div>
+      <div class="price-line"><span>配件小計：</span><span id="addonPrice">0</span></div>
+      <div class="price-line"><span>版費：</span><span id="printPrice">0</span></div>
+      <div class="price-line"><span>設計費：</span><span id="designPrice">0</span></div>
+      <div id="formula" class="muted"></div>
+      <hr>
+      <div class="total">NT$ <span id="total">0</span></div>
+    </div>
+
+    <div class="note">備註：以上報價為未稅價格，不包含運送費用</div>
+    <div class="date" id="date"></div>
   </div>
 
-  <div class="section">
-    <label>數量</label>
-    <input id="quantity" type="number" list="quantity-options" placeholder="請輸入或選擇數量" min="1" disabled />
-  </div>
-  <datalist id="quantity-options">
-    <option value="100">
-    <option value="200">
-    <option value="300">
-  </datalist>
+  <script>
+    const product = document.getElementById("product");
+    const quantity = document.getElementById("quantity");
+    const printFee = document.getElementById("printFee");
+    const designFee = document.getElementById("designFee");
+    const addon = document.getElementById("addon");
 
-  <div class="section">
-    <label>2. 印刷大約想要幾色</label>
-    <select id="height">
-      <option value="0">請選擇</option>
-      <option value="600">單色</option>
-      <option value="1200">雙色</option>
-    </select>
-  </div>
+    const unitPriceEl = document.getElementById("unitPrice");
+    const productNoteEl = document.getElementById("productNote");
+    const formulaEl = document.getElementById("formula");
 
-  <div class="section">
-    <label>3. 需要設計嗎</label>
-    <select id="width">
-      <option value="0">請選擇</option>
-      <option value="0">不需要</option>
-      <option value="2000">需要</option>
-    </select>
-  </div>
+    const mainPriceEl = document.getElementById("mainPrice");
+    const addonPriceEl = document.getElementById("addonPrice");
+    const printPriceEl = document.getElementById("printPrice");
+    const designPriceEl = document.getElementById("designPrice");
+    const totalEl = document.getElementById("total");
 
-  <div class="section">
-    <label>4. 配件</label>
-    <select id="top">
-      <option value="0">無</option>
-      <option value="35">+口袋</option>
-    </select>
-  </div>
+    const productPreview = document.getElementById("productPreview");
+    const productSizeImg = document.getElementById("productSizeImg");
+    const productColorImg = document.getElementById("productColorImg");
+    const imgError = document.getElementById("imgError");
 
-  <div class="price-box">
-    <div class="price-line"><span>衣服小計：</span><span id="mainPrice">0</span></div>
-    <div class="price-line"><span>配件小計：</span><span id="topPrice">0</span></div>
-    <div class="price-line"><span>版費：</span><span id="printPrice">0</span></div>
-    <div class="price-line"><span>設計費：</span><span id="designPrice">0</span></div>
-    <div id="formula" style="font-size:12px;color:#777;margin-top:6px;"></div>
-    <hr>
-    <div class="total">NT$ <span id="total">0</span></div>
-  </div>
+    // 檔名（依你目前實際檔名）
+    const productImages = {
+      t24: {
+        size: "t24_size.jpg",
+        colors: "t24_colors.jpg"
+      },
+      ag18000: {
+        size: "ag180_size.jpg",
+        colors: "ag180_colors.jpg"
+      }
+    };
 
-  <div class="note">備註：以上報價為未稅價格，不包含運送費用</div>
-  <div class="date" id="date"></div>
-</div>
+    const productNotes = {
+      t24: "短袖棉T（T-24），下方會顯示對應尺寸表與顏色圖",
+      ag18000: "短袖棉T（AG18000），下方會顯示對應尺寸表與顏色圖",
+      dry_short: "排汗材質，適合運動、戶外",
+      cotton_long: "長袖棉T，秋冬熱銷款",
+      dry_long: "長袖排汗，適合團體活動"
+    };
 
-<script>
-const product = document.getElementById("product");
-const height = document.getElementById("height"); // 版費
-const width = document.getElementById("width");   // 設計費
-const topSel = document.getElementById("top");    // 配件
-const quantity = document.getElementById("quantity");
+    function showImgError(show){
+      imgError.style.display = show ? "block" : "none";
+    }
 
-const unitPriceEl = document.getElementById("unitPrice");
-const productNoteEl = document.getElementById("productNote");
-const formulaEl = document.getElementById("formula");
-const mainPriceEl = document.getElementById("mainPrice");
-const topPriceEl = document.getElementById("topPrice");
-const printPriceEl = document.getElementById("printPrice");
-const designPriceEl = document.getElementById("designPrice");
-const totalEl = document.getElementById("total");
+    // 自動嘗試多種路徑，避免你不知道 index.html 在哪一層
+    function buildCandidates(fileName){
+      return [
+        `./${fileName}`,           // index.html 與圖片同層（在 images 資料夾內）
+        `./images/${fileName}`,    // index.html 與 images 同層（標準結構）
+        `../images/${fileName}`    // index.html 在子資料夾
+      ];
+    }
 
-const productNotes = {
-  145: "厚磅棉T，適合活動、品牌形象",
-  130: "排汗材質，適合運動、戶外",
-  195: "長袖棉T，秋冬熱銷款",
-  180: "長袖排汗，適合團體活動"
-};
+    function loadFirstWorking(imgEl, candidates){
+      return new Promise((resolve, reject) => {
+        let i = 0;
+        const tryNext = () => {
+          if(i >= candidates.length) return reject(new Error("all_failed"));
+          const url = candidates[i++];
 
-function getUnitPrice(basePrice, qty) { return basePrice; }
+          const tester = new Image();
+          tester.onload = () => {
+            imgEl.src = url;
+            resolve(url);
+          };
+          tester.onerror = tryNext;
+          tester.src = url;
+        };
+        tryNext();
+      });
+    }
 
-function calc() {
-  const basePrice = Number(product.value);
-  const qty = Number(quantity.value) || 0;
+    async function updateProductImages(styleKey){
+      const cfg = productImages[styleKey];
+      showImgError(false);
 
-  if(!basePrice){
-    quantity.disabled=true; quantity.value="";
-    unitPriceEl.innerText=0; productNoteEl.innerText="";
-    formulaEl.innerText=""; mainPriceEl.innerText=0;
-    topPriceEl.innerText=0; printPriceEl.innerText=0;
-    designPriceEl.innerText=0; totalEl.innerText=0;
-    return;
-  }
+      if(!cfg){
+        productSizeImg.src = "";
+        productColorImg.src = "";
+        productPreview.style.display = "none";
+        return;
+      }
 
-  quantity.disabled=false; quantity.placeholder="請輸入數量";
+      productPreview.style.display = "block";
+      productSizeImg.src = "";
+      productColorImg.src = "";
 
-  const unitPrice = getUnitPrice(basePrice, qty);
-  unitPriceEl.innerText = unitPrice;
-  productNoteEl.innerText = productNotes[basePrice] || "";
+      try{
+        await loadFirstWorking(productSizeImg, buildCandidates(cfg.size));
+        await loadFirstWorking(productColorImg, buildCandidates(cfg.colors));
+        showImgError(false);
+      }catch(e){
+        showImgError(true);
+      }
+    }
 
-  const clothesTotal = unitPrice * qty;
-  const topP = Number(topSel.value) * qty;  // 配件小計
-  const printP = Number(height.value);      // 版費固定
-  const designP = Number(width.value);      // 設計費固定
+    function getUnitPrice(basePrice){ return basePrice; } // 不折扣
+    function money(n){ return Number(n || 0).toLocaleString("zh-TW"); }
 
-  const total = clothesTotal + topP + printP + designP;
+    function resetAll(){
+      quantity.disabled = true;
+      quantity.value = "";
+      quantity.placeholder = "請先選擇衣服款式";
 
-  mainPriceEl.innerText = clothesTotal.toLocaleString();
-  topPriceEl.innerText = topP.toLocaleString();
-  printPriceEl.innerText = printP.toLocaleString();
-  designPriceEl.innerText = designP.toLocaleString();
-  totalEl.innerText = total.toLocaleString();
+      unitPriceEl.textContent = "0";
+      productNoteEl.textContent = "";
+      formulaEl.textContent = "";
 
-  if(qty>0){
-    formulaEl.innerText = 
-      `衣服: ${unitPrice} × ${qty} = ${clothesTotal.toLocaleString()}, `+
-      `配件: ${topSel.value} × ${qty} = ${topP.toLocaleString()}, `+
-      `版費: ${printP.toLocaleString()}, 設計費: ${designP.toLocaleString()}`;
-  } else {
-    formulaEl.innerText="";
-  }
-}
+      mainPriceEl.textContent = "0";
+      addonPriceEl.textContent = "0";
+      printPriceEl.textContent = "0";
+      designPriceEl.textContent = "0";
+      totalEl.textContent = "0";
 
-document.querySelectorAll("#product,#height,#width,#top").forEach(el=>el.addEventListener("change",calc));
-quantity.addEventListener("input",calc);
+      updateProductImages("");
+      showImgError(false);
+    }
 
-document.getElementById("date").innerText="報價日期："+new Date().toLocaleString("zh-TW");
-</script>
+    function calc(){
+      const selectedOpt = product.options[product.selectedIndex];
+      const basePrice = Number(selectedOpt?.dataset?.price || 0);
+      const styleKey = product.value;
+
+      if(!styleKey || !basePrice){
+        resetAll();
+        return;
+      }
+
+      quantity.disabled = false;
+      quantity.placeholder = "請輸入或選擇數量";
+
+      // 圖片更新（異步，不影響報價）
+      updateProductImages(styleKey);
+
+      const qty = Number(quantity.value) || 0;
+      const unitPrice = getUnitPrice(basePrice);
+
+      unitPriceEl.textContent = money(unitPrice);
+      productNoteEl.textContent = productNotes[styleKey] || "";
+
+      const clothesTotal = unitPrice * qty;
+
+      const addonUnit = Number(addon.value) || 0;
+      const addonTotal = addonUnit * qty;
+
+      const printP = Number(printFee.value) || 0;
+      const designP = Number(designFee.value) || 0;
+
+      const total = clothesTotal + addonTotal + printP + designP;
+
+      mainPriceEl.textContent = money(clothesTotal);
+      addonPriceEl.textContent = money(addonTotal);
+      printPriceEl.textContent = money(printP);
+      designPriceEl.textContent = money(designP);
+      totalEl.textContent = money(total);
+
+      if(qty > 0){
+        const parts = [];
+        parts.push(`衣服：${money(unitPrice)} × ${money(qty)} = ${money(clothesTotal)}`);
+        if(addonUnit > 0) parts.push(`配件：${money(addonUnit)} × ${money(qty)} = ${money(addonTotal)}`);
+        if(printP > 0) parts.push(`版費：${money(printP)}`);
+        if(designP > 0) parts.push(`設計費：${money(designP)}`);
+        formulaEl.textContent = parts.join("，");
+      }else{
+        formulaEl.textContent = "";
+      }
+    }
+
+    [product, printFee, designFee, addon].forEach(el => el.addEventListener("change", calc));
+    quantity.addEventListener("input", calc);
+
+    resetAll();
+    document.getElementById("date").textContent = "報價日期：" + new Date().toLocaleString("zh-TW");
+  </script>
 </body>
 </html>
